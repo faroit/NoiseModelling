@@ -47,24 +47,24 @@ The tool integrates the CNOSSOS-EU road and rail traffic noise emission and CNOS
 
 It is closely associated with the H2GIS [@bocher_h2gis_2015] and PostGIS [@mckenna_postgis_2022] spatial databases in order to handle spatial features and to facilitate cross-analysis with other spatial data.
 
-The NoiseModelling java library can be used independently or controlled through a graphical user interface.
+The NoiseModelling Java library can be used independently or controlled through a graphical user interface.
 
-It is freely available for use by researchers, educational institutions and private companies.
+It is freely available for use by researchers, educational institutions, and private companies.
 
 # Statement of need
 
-Noise has significant impacts on public health, comfort and biodiversity. Prolonged exposure to high noise levels can lead to health issues such as stress, sleep disturbances, and cardiovascular diseases [@chen_environmental_2023]. Additionally, noise can disrupt ecosystems, affecting wildlife and altering the natural behaviors of species [@sordello_evidence_2020]. Including noise in environmental assessments is essential to better prevent its negative effects and supports the development of more sustainable planning strategies.
+Noise has significant impacts on public health, comfort, and biodiversity. Prolonged exposure to high noise levels can lead to health issues such as stress, sleep disturbances, and cardiovascular diseases [@chen_environmental_2023]. Additionally, noise can disrupt ecosystems, affecting wildlife and altering the natural behaviors of species [@sordello_evidence_2020]. Including noise in environmental assessments is essential to better prevent its negative effects and supports the development of more sustainable planning strategies.
 
 It is therefore crucial to simulate and predict noise propagation in various environments. This provides a quantitative understanding of sound sources, enabling, for example, the assessment of noise mitigation measures and regulatory compliance.
 
 Since 2019 and Directive (EU) 2015/996 [@noauthor_commission_2015], the CNOSSOS-EU emission and propagation method must be used to produce strategic noise maps as described in Directive 2002/49/EC [@noauthor_commission_2002].
 
-The NoiseModelling library has been developed jointly by Gustave Eiffel University and CNRS in an effort to provide the engineering and scientific communities around the world with a fully free and open-source software to compute and explore noise maps and experiment with the underlying models.
+The NoiseModelling library has been developed jointly by Gustave Eiffel University and CNRS in an effort to provide the engineering and scientific communities around the world with fully free and open-source software to compute and explore noise maps and experiment with the underlying models.
 
 To date, NoiseModelling has been applied in a variety of research projects and practical scenarios, including, but not limited to:
 
 - Standard noise maps of the main transport infrastructures [@aumond_strategic_2023].
-- Dynamic noise maps from the coupling with several traffic models [@le_bescond_open-source_2021], [@baclet_near-real-time_2023], [@quintero_statistical_2019], such as MATSim [@horni_multi-agent_2016], SUMO [@lopez_microscopic_2018] and SymuVia [@licit_open-symuvia].
+- Dynamic noise maps from coupling with several traffic models [@le_bescond_open-source_2021], [@baclet_near-real-time_2023], [@quintero_statistical_2019], such as MATSim [@horni_multi-agent_2016], SUMO [@lopez_microscopic_2018] and SymuVia [@licit_open-symuvia].
 - Sensitivity analysis of various aspects of the CNOSSOS-EU model [@aumond_global_2021].
 - Dynamic noise map from noise sensors with data assimilation methods [@lesieur_data_2021].
 - Noise quantification of specific sources such as sirens [@siliezar_case_2023] or drones [@legriffon_drone_2024]
@@ -73,15 +73,15 @@ Other open-source tools can produce noise maps:
 
   - Code_TYMPAN [@edf_code_tympan] is a desktop application that focuses on industrial noise and is based on the ISO 9613-2 method.
   - OpeNoise Map [@arpa_piemonte_openoise_2024] is a QGis plugin that only implements a simplified version of the CNOSSOS-EU method.
-  - The Sound Mapping Tools [@keyel_sound_2017], are open-source Python-based GIS tools designed to model anthropogenic noise propagation in natural ecosystems using SPreAD-GIS [@reed_gis_2012], NMSIMGIS and ISO 9613-2 within an ArcGIS environment.
+  - The Sound Mapping Tools [@keyel_sound_2017] are open-source Python-based GIS tools designed to model anthropogenic noise propagation in natural ecosystems using SPreAD-GIS [@reed_gis_2012], NMSIMGIS, and ISO 9613-2 within an ArcGIS environment.
 
-Commercial software packages such as CadnaA (DataKustik), SoundPLAN (SoundPLAN GmbH), Predictor-LimA (Softnoise) or IMMI (Wölfel) are also used for noise mapping. However, their source code is closed, which prevents users from inspecting, modifying or extending the underlying models, and their licensing costs can be a barrier for research and education.
+Commercial software packages such as CadnaA (DataKustik), SoundPLAN (SoundPLAN GmbH), Predictor-LimA (Softnoise) or IMMI (Wölfel) are also used for noise mapping. However, their source code is closed, which prevents users from inspecting, modifying, or extending the underlying models, and their licensing costs can be a barrier for research and education.
 
 NoiseModelling, whose GIS-based approach was first described in @bocher_noisemodelling_2019, therefore occupies a distinctive position by providing CNOSSOS-EU road and railway modelling, sound propagation, three-dimensional spatial processing and an extensible open-source GIS framework in a single modelling environment.
 
 # Architecture
 
-The overall architecture is illustrated on \autoref{fig:nm_architecture} and is described below.
+The overall architecture is illustrated in \autoref{fig:nm_architecture} and is described below.
 
 ![The NoiseModelling Architecture. \label{fig:nm_architecture}](assets/nm_architecture.png "The NoiseModelling Architecture"){ width=55% }
 
@@ -112,8 +112,8 @@ The code architecture permits other sound source types and/or other emission mod
 
 The calculation of acoustic propagation between a sound source and a receiver is based on the determination of the paths travelled by the sound wave, in particular:
 
-* The direct path from the source to the receiver, with diffraction passing over horizontal digital elevation model or over horizontal building edges if an obstacle is present,
-* The reflected path, due to the specular reflections of sound on building walls with a given maximum amount of consecutive reflections (the order of reflection),
+* The direct path from the source to the receiver, with diffraction passing over a horizontal digital elevation model or over horizontal building edges if an obstacle is present,
+* The reflected path, due to the specular reflections of sound on building walls with a given maximum number of consecutive reflections (the order of reflection),
 * The diffracted path, due to the diffraction of sound around buildings on vertical edges.
 
 Some paths are illustrated in \autoref{fig:path}.
@@ -122,18 +122,18 @@ Some paths are illustrated in \autoref{fig:path}.
 
 The path-finding stage is the most time-consuming operation in the entire numerical simulation.
 
-All objects in the simulation, such as building polygons, isolated walls and elements of the triangular elevation mesh, are placed in a fast R-Tree search structure.
+All objects in the simulation, such as building polygons, isolated walls, and elements of the triangular elevation mesh, are placed in a fast R-Tree search structure.
 
-When calculating specular reflections using the image-source method, the number of image sources increases rapidly with depth. This exponential growth is one of the main limitations of the image-source method for complex geometries or high-order reflections. Instead of generating image sources for each new source-receiver pair, NoiseModelling generates for each point receiver the image receiver's field of view for the walls within its range. When looking for potential walls for reflection, the search is then limited to intersecting the source position with the receiver view cones. This method is illustrated in \autoref{fig:view_cones}.
+When calculating specular reflections using the image-source method, the number of image sources increases rapidly with depth. This exponential growth is one of the main limitations of the image-source method for complex geometries or high-order reflections. Instead of generating image sources for each new source-receiver pair, NoiseModelling generates, for each point receiver, the image receiver's field of view for the walls within its range. When looking for potential walls for reflection, the search is then limited to intersecting the source position with the receiver view cones. This method is illustrated in \autoref{fig:view_cones}.
 Those precomputed view cones eliminate a lot of non-valid series of specular reflections.
 
 ![Receiver view cones. (a) All receiver view cones that intersect the source point and its parent order view cone. (b) The only valid reflection is second order: it bounces first on the blue then on the yellow receiver view cone. \label{fig:view_cones}](assets/view_cones.png)
 
-The output of the path-finding algorithm contains a list of vertical cut profiles between sources and receivers, covering obstacles information such as buildings and terrain.
+The output of the path-finding algorithm contains a list of vertical cut profiles between sources and receivers, covering obstacle information such as buildings and terrain.
 
 ## Propagation model
 
-The CNOSSOS-EU propagation method describes how to compute the noise level at a given receiver location based on the various noise sources in its surrounding along with a detailed description of the environment (buildings, ground elevation, meteorological conditions etc.) [@noauthor_commission_2015].
+The CNOSSOS-EU propagation method describes how to compute the noise level at a given receiver location based on the various noise sources in its surroundings, along with a detailed description of the environment (buildings, ground elevation, meteorological conditions, etc.) [@noauthor_commission_2015].
 
 Using the vertical cut profiles given by the path-finding algorithm, other propagation models than the CNOSSOS-EU one can be implemented.
 
@@ -141,17 +141,17 @@ Using the vertical cut profiles given by the path-finding algorithm, other propa
 
 A major portion of the code base is covered by unit tests.
 
-Tests that cover the model implementations are comparisons between the code and reference documents and independent CNOSSOS-EU implementations. For propagation and path-finding this is the ISO/TR 17534-4:2020 [@iso_isotr_2020]. For emission the comparison is done with independent implementations.
+Tests that cover the model implementations are comparisons between the code and reference documents and independent CNOSSOS-EU implementations. For propagation and path-finding, this is the ISO/TR 17534-4:2020 [@iso_isotr_2020]. For emission, the comparison is done with independent implementations.
 All discrepancies between our implementation and the references can be identified in the source code through dedicated tests. The comparison with the ISO/TR 17534-4:2020 test cases is presented in the "Conformity to ISO/TR 17534-4:2020" page of the documentation (https://noisemodelling.readthedocs.io/en/latest/Cnossos_Report.html).
 
 # Community
 
-A substantial effort is being made to help newcomers get started with NoiseModelling, through a clear documentation and through dedicated tutorials.
+A substantial effort is being made to help newcomers get started with NoiseModelling, through clear documentation and through dedicated tutorials.
 
 Every year since 2021, the community has gathered at NoiseModelling Days. These one- or two-day online or hybrid sessions provide training for new users, as well as an opportunity to discuss the work carried out by experienced users. At this annual meeting, progress and prospects within the model are presented.
 
 # Acknowledgements
 
-We would like to thank Sacha Baclet, Arnaud Can, Olivier Chiello, Ndeye Maguette Diagne, David Ecotière, Benoit Gauvreau, Martin Glesser, Gwenaël Guillaume, Adrien Le Bellec, Rob van Loon, Sylvain Palominos, Su Qi, Ignacio Soto Molina and all the contributors for their valuable contributions to this project.
+We would like to thank Sacha Baclet, Arnaud Can, Olivier Chiello, Ndeye Maguette Diagne, David Ecotière, Benoit Gauvreau, Martin Glesser, Gwenaël Guillaume, Adrien Le Bellec, Rob van Loon, Sylvain Palominos, Su Qi, Ignacio Soto Molina, and all the contributors for their valuable contributions to this project.
 
 # References
